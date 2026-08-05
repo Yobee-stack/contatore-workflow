@@ -4,316 +4,224 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#070E1A">
-<title>Contatore Workflow — Yobee</title>
+<title>I tuoi lanci — Yobee</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  /* Palette Yobee — allineata all'AI Operations Hub (colori del brand yobee.it) */
   :root{
-    --bg:#070E1A;
-    --bg2:#0D1A2E;
-    --panel:rgba(255,255,255,0.04);
-    --panel-2:rgba(255,255,255,0.06);
-    --border:rgba(255,255,255,0.08);
-    --border-strong:rgba(255,255,255,0.14);
-    --text:#FFFFFF;
-    --muted:rgba(255,255,255,0.38);
-    --accent:#1D9E75;
-    --accent-light:#5DCAA5;
-    --accent-dim:rgba(29,158,117,0.35);
-    --warn:#E0A23C;
-    --danger:#E0635F;
-    --font:'DM Sans',sans-serif;
-    --mono:'DM Mono',monospace;
+    --bg:#070E1A; --bg2:#0D1A2E;
+    --panel:rgba(255,255,255,0.04); --panel-2:rgba(255,255,255,0.06);
+    --border:rgba(255,255,255,0.08); --border-strong:rgba(255,255,255,0.14);
+    --text:#FFFFFF; --muted:rgba(255,255,255,0.40);
+    --accent:#1D9E75; --accent-light:#5DCAA5; --accent-dim:rgba(29,158,117,0.30);
+    --warn:#E0A23C; --danger:#E0635F;
+    --font:'DM Sans',sans-serif; --mono:'DM Mono',monospace;
   }
   *{box-sizing:border-box;}
-  body{
-    margin:0;
-    background:var(--bg);
-    color:var(--text);
-    font-family:var(--font);
-    -webkit-font-smoothing:antialiased;
-    min-height:100vh;
-    overflow-x:hidden;
-  }
-  /* griglia ambientale come nell'hub */
-  body::before{
-    content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
-    background-image:linear-gradient(rgba(29,158,117,0.04) 1px, transparent 1px),
-                     linear-gradient(90deg, rgba(29,158,117,0.04) 1px, transparent 1px);
-    background-size:48px 48px;
-  }
-  .wrap{max-width:1180px;margin:0 auto;padding:32px 24px 80px;position:relative;z-index:1;}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font);
+    -webkit-font-smoothing:antialiased;min-height:100vh;overflow-x:hidden;}
+  body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+    background-image:linear-gradient(rgba(29,158,117,0.04) 1px,transparent 1px),
+                     linear-gradient(90deg,rgba(29,158,117,0.04) 1px,transparent 1px);
+    background-size:48px 48px;}
+  .wrap{max-width:760px;margin:0 auto;padding:32px 24px 80px;position:relative;z-index:1;}
 
-  /* ---- Header ---- */
-  header{
-    display:flex;justify-content:space-between;align-items:flex-end;
-    border-bottom:1px solid var(--border);
-    padding-bottom:20px;margin-bottom:28px;flex-wrap:wrap;gap:16px;
-  }
-  .logo-block{display:flex;flex-direction:column;gap:6px;}
-  .eyebrow{
-    font-family:var(--mono);
-    font-size:11px;letter-spacing:.12em;text-transform:uppercase;
-    color:var(--accent-light);margin:0;
-  }
-  h1{
-    font-family:var(--font);
-    font-size:26px;font-weight:500;margin:0;letter-spacing:-.01em;color:#fff;
-  }
-  .status-row{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12px;color:var(--muted);}
-  .pill{
-    font-family:var(--mono);font-size:10px;padding:5px 12px;border-radius:99px;
-    border:1px solid var(--border);color:var(--muted);letter-spacing:.06em;
-    display:flex;align-items:center;gap:6px;
-  }
-  .pill.live{border-color:rgba(29,158,117,0.4);color:var(--accent-light);}
-  .pill.live .dot{background:var(--accent);animation:pulse 2s infinite;}
-  .pill.off{border-color:rgba(224,99,95,0.4);color:#F0A0A0;}
-  .pill.off .dot{background:var(--danger);}
-  .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);}
-  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
-  button.refresh{
-    font-family:var(--mono);font-size:12px;
-    background:transparent;border:1px solid var(--border);color:var(--text);
-    padding:8px 14px;border-radius:8px;cursor:pointer;transition:.15s;
-  }
-  button.refresh:hover{border-color:var(--accent);color:var(--accent-light);}
+  header{display:flex;justify-content:space-between;align-items:flex-end;
+    border-bottom:1px solid var(--border);padding-bottom:20px;margin-bottom:28px;flex-wrap:wrap;gap:14px;}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-light);margin:0 0 6px;}
+  h1{font-family:var(--font);font-size:26px;font-weight:500;margin:0;letter-spacing:-.01em;}
+  .sub{color:var(--muted);font-size:14px;margin:4px 0 0;}
+  .backlink{font-family:var(--mono);font-size:12px;color:var(--muted);text-decoration:none;padding:8px 13px;border:1px solid var(--border);border-radius:8px;}
+  .backlink:hover{color:var(--accent-light);border-color:var(--accent);}
 
-  /* ---- Config bar (mostrata solo se manca URL) ---- */
-  .config{
-    background:var(--panel);border:1px solid var(--warn);border-radius:10px;
-    padding:16px 18px;margin-bottom:24px;font-size:13px;color:var(--muted);
-    display:none;
-  }
-  .config code{color:var(--warn);font-family:var(--mono);}
-  .config input{
-    width:100%;margin-top:10px;background:var(--bg2);border:1px solid var(--border);
-    color:var(--text);padding:9px 10px;border-radius:8px;font-family:var(--mono);font-size:12px;
-  }
-
-  /* ---- Hero counter ---- */
-  .hero{display:grid;grid-template-columns:1.1fr 2fr;gap:20px;margin-bottom:28px;}
-  .hero-main{
+  .lookup{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;
     background:linear-gradient(160deg,var(--bg2),rgba(255,255,255,0.02));
-    border:1px solid var(--border);border-radius:14px;padding:26px;
-    display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden;
-  }
-  .hero-main::after{
-    content:'';position:absolute;left:0;bottom:0;height:2px;width:100%;
-    background:linear-gradient(90deg,var(--accent),transparent);
-  }
-  .hero-main .num{
-    font-family:var(--mono);font-size:52px;font-weight:500;
-    color:var(--accent-light);line-height:1;letter-spacing:-.01em;
-  }
-  .hero-main .label{font-size:13px;color:var(--muted);margin-top:10px;}
-  .mini-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
-  .mini-card{
-    background:var(--panel);border:1px solid var(--border);border-radius:14px;
-    padding:18px;transition:border-color .15s,background .15s;
-  }
-  .mini-card:hover{border-color:var(--border-strong);background:var(--panel-2);}
-  .mini-card .n{font-family:var(--mono);font-size:26px;font-weight:500;color:#fff;}
-  .mini-card .l{font-size:12px;color:var(--muted);margin-top:6px;}
+    border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:22px;}
+  .lk-field{display:flex;flex-direction:column;gap:8px;flex:1;min-width:200px;}
+  label{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
+  input#numero{background:var(--bg);border:1px solid var(--border-strong);border-radius:10px;color:#fff;
+    font-family:var(--mono);font-size:22px;letter-spacing:.04em;padding:12px 16px;width:100%;outline:none;transition:border-color .15s,background .15s;}
+  input#numero::placeholder{color:rgba(255,255,255,0.2);}
+  input#numero:focus{border-color:var(--accent);background:rgba(29,158,117,0.05);}
+  input#numero.err{border-color:rgba(224,99,95,0.7);}
+  .btn{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:13px 22px;font-family:var(--font);
+    font-size:14px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background .15s,transform .1s;white-space:nowrap;}
+  .btn:hover{background:#18875f;} .btn:active{transform:scale(.98);} .btn:disabled{background:rgba(29,158,117,0.3);cursor:not-allowed;}
+  .btn svg{width:14px;height:14px;}
 
-  /* ---- Sezioni ---- */
-  section{margin-bottom:32px;}
-  .sec-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
-  .sec-head h2{
-    font-family:var(--font);font-size:14px;font-weight:500;margin:0;
-    text-transform:uppercase;letter-spacing:.06em;color:var(--text);
-  }
-  .sec-head span{font-size:11px;color:var(--muted);font-family:var(--mono);}
+  .status{min-height:20px;margin:0 2px 20px;font-family:var(--mono);font-size:13px;color:var(--muted);}
+  .status.err{color:#F0A0A0;}
 
-  .bar-list{display:flex;flex-direction:column;gap:10px;}
-  .bar-row{display:grid;grid-template-columns:220px 1fr 46px;align-items:center;gap:12px;}
-  .bar-row .name{font-size:13px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .bar-track{background:var(--panel);border:1px solid var(--border);border-radius:6px;height:10px;overflow:hidden;}
-  .bar-fill{height:100%;background:linear-gradient(90deg,var(--accent-dim),var(--accent));}
-  .bar-row .count{font-family:var(--mono);font-size:12px;color:var(--muted);text-align:right;}
+  /* pannello risultato */
+  .result{display:none;}
+  .result.show{display:block;animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
 
-  .badge{
-    display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;
-    font-family:var(--mono);border:1px solid var(--border);color:var(--muted);
-  }
-  .badge.team{color:var(--warn);border-color:rgba(224,162,60,0.5);}
+  .who{display:flex;align-items:baseline;gap:10px;margin:0 2px 14px;}
+  .who .name{font-size:18px;font-weight:500;}
+  .who .mese{font-family:var(--mono);font-size:12px;color:var(--muted);}
 
-  /* ---- Log ---- */
-  .log{background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
-  .log-row{
-    display:grid;grid-template-columns:150px 1fr 140px 1fr;gap:14px;
-    padding:11px 16px;border-bottom:1px solid var(--border);
-    font-family:var(--mono);font-size:12px;align-items:center;
-  }
-  .log-row:last-child{border-bottom:none;}
-  .log-row.head{color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-size:10px;background:rgba(255,255,255,0.02);}
-  .log-row .ts{color:var(--muted);}
-  .log-row .wf{color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .log-row .cr{color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  /* misuratore grande budget unico */
+  .hero{background:linear-gradient(160deg,var(--bg2),rgba(255,255,255,0.02));
+    border:1px solid var(--border);border-radius:18px;padding:28px;margin-bottom:16px;position:relative;overflow:hidden;}
+  .hero .row{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+  .hero .big{font-family:var(--mono);font-weight:500;font-size:64px;line-height:1;font-variant-numeric:tabular-nums;}
+  .hero .big .of{font-size:26px;color:rgba(255,255,255,0.3);}
+  .hero .word{font-size:15px;color:var(--muted);}
+  .hero .used{font-family:var(--mono);font-size:13px;color:var(--muted);}
+  .track{height:12px;border-radius:8px;background:rgba(255,255,255,0.07);overflow:hidden;margin-top:20px;}
+  .fill{height:100%;border-radius:8px;width:0;transition:width .55s ease;}
+  .badge-inf{display:inline-block;font-family:var(--mono);font-size:11px;color:var(--accent-light);
+    border:1px solid rgba(29,158,117,0.4);border-radius:99px;padding:4px 11px;}
 
-  .empty{
-    text-align:center;padding:50px 20px;color:var(--muted);font-size:13px;
-    border:1px dashed var(--border);border-radius:12px;
-  }
+  /* dettaglio per workflow */
+  .det-label{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:22px 2px 10px;}
+  .det{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;}
+  .det-card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px 16px;}
+  .det-card .n{font-family:var(--mono);font-size:26px;font-weight:500;color:#fff;line-height:1;}
+  .det-card .l{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.35;}
 
-  @media (max-width:760px){
-    .hero{grid-template-columns:1fr;}
-    .mini-grid{grid-template-columns:1fr 1fr;}
-    .bar-row{grid-template-columns:120px 1fr 40px;}
-    .log-row{grid-template-columns:100px 1fr 90px;}
-    .log-row .cr{display:none;}
-  }
-  @media (prefers-reduced-motion:reduce){.pill.live .dot{animation:none;}}
+  .empty{border:1px dashed var(--border-strong);border-radius:16px;padding:44px 24px;text-align:center;color:var(--muted);}
+  .empty h3{color:#fff;font-weight:500;margin:0 0 6px;font-size:17px;}
+
+  footer{margin-top:38px;padding-top:18px;border-top:1px solid var(--border);
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-family:var(--mono);font-size:11px;color:rgba(255,255,255,0.22);}
+
+  @media (max-width:560px){h1{font-size:22px}.hero .big{font-size:52px}}
+  @media (prefers-reduced-motion:reduce){.fill{transition:none;}.result.show{animation:none;}}
 </style>
 </head>
 <body>
 <div class="wrap">
-
   <header>
-    <div class="logo-block">
+    <div>
       <p class="eyebrow">Yobee · AI Operations</p>
-      <h1>Contatore Workflow</h1>
+      <h1>I tuoi lanci</h1>
+      <p class="sub">Inserisci il tuo numero per vedere quanti lanci ti restano questo mese.</p>
     </div>
-    <div class="status-row">
-      <span class="pill live" id="statusPill"><span class="dot" id="statusDot"></span><span id="statusText">connessione in corso…</span></span>
-      <button class="refresh" onclick="carica()">↻ Aggiorna</button>
-    </div>
+    <a class="backlink" href="../Pannello-automazione/">← Hub</a>
   </header>
 
-  <div class="config" id="configBox">
-    Nessun endpoint configurato. Apri questo file e imposta la costante
-    <code>WEBHOOK_URL</code> nello script in fondo alla pagina con l'URL del webhook
-    <code>contatore-stats</code> del workflow "00 - Pannello Contatore API".
-    <input type="text" id="urlInput" placeholder="https://tuo-n8n.dominio.it/webhook/contatore-stats">
+  <div class="lookup">
+    <div class="lk-field">
+      <label for="numero">Il tuo numero</label>
+      <input id="numero" inputmode="numeric" autocomplete="off" placeholder="es. 3">
+    </div>
+    <button class="btn" id="go" onclick="cerca()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      Vedi i miei lanci
+    </button>
   </div>
 
-  <div class="hero">
-    <div class="hero-main">
-      <div class="num" id="totale">—</div>
-      <div class="label">esecuzioni registrate in totale</div>
-    </div>
-    <div class="mini-grid">
-      <div class="mini-card"><div class="n" id="numWorkflow">—</div><div class="l">workflow attivi</div></div>
-      <div class="mini-card"><div class="n" id="numUtenti">—</div><div class="l">utenti distinti</div></div>
-      <div class="mini-card"><div class="n" id="numCred">—</div><div class="l">credenziali monitorate</div></div>
+  <div class="status" id="status" role="status" aria-live="polite"></div>
+
+  <div id="content">
+    <div class="empty">
+      <h3>Inserisci il tuo numero</h3>
+      <div>Digita il codice che ti è stato assegnato e premi “Vedi i miei lanci”.</div>
     </div>
   </div>
 
-  <section>
-    <div class="sec-head"><h2>Utilizzo per workflow</h2><span id="wfSpan"></span></div>
-    <div class="bar-list" id="perWorkflow"></div>
-  </section>
-
-  <section>
-    <div class="sec-head"><h2>Consumo per credenziale</h2><span>stima da mappa statica per workflow</span></div>
-    <div class="bar-list" id="perCredenziale"></div>
-  </section>
-
-  <section>
-    <div class="sec-head"><h2>Utilizzo per utente</h2><span>"Team" = account condiviso, quota estesa</span></div>
-    <div class="bar-list" id="perUtente"></div>
-  </section>
-
-  <section>
-    <div class="sec-head"><h2>Ultimi eventi</h2><span id="logSpan"></span></div>
-    <div class="log" id="logBox">
-      <div class="log-row head">
-        <span>Data/ora</span><span>Workflow</span><span>Utente</span><span>Credenziali</span>
+  <div class="result" id="result">
+    <div class="who"><span class="name" id="r-nome"></span><span class="mese" id="r-mese"></span></div>
+    <div class="hero">
+      <div class="row">
+        <div class="big" id="r-big"></div>
+        <div style="text-align:right">
+          <div class="word" id="r-word"></div>
+          <div class="used" id="r-used"></div>
+        </div>
       </div>
+      <div class="track"><div class="fill" id="r-fill"></div></div>
     </div>
-  </section>
+    <div class="det-label" id="r-detlabel">Dettaglio per workflow</div>
+    <div class="det" id="r-det"></div>
+  </div>
 
+  <footer>
+    <span>YOBEE SRL · Via Giacomo Watt 27, Milano</span>
+    <span>Contatore lanci · reset il 1° del mese</span>
+  </footer>
 </div>
 
 <script>
-  // Imposta qui l'URL del webhook "contatore-stats" del workflow 00 - Pannello Contatore API
-  const WEBHOOK_URL = "https://n8n.foffyautomazioni.com/webhook/contatore-stats";
+(function(){
+  "use strict";
+  var QUOTA_ENDPOINT = "https://n8n.foffyautomazioni.com/webhook/quota";
 
-  function setStatus(ok, msg){
-    var pill = document.getElementById('statusPill');
-    pill.className = 'pill ' + (ok ? 'live' : 'off');
-    document.getElementById('statusText').textContent = msg;
+  var numEl=document.getElementById("numero"), statusEl=document.getElementById("status"),
+      contentEl=document.getElementById("content"), resultEl=document.getElementById("result"),
+      goBtn=document.getElementById("go");
+
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+  function setStatus(m,e){statusEl.textContent=m||"";statusEl.className="status"+(e?" err":"");}
+  function colorFor(ratio){ if(ratio<=0.15)return "var(--danger)"; if(ratio<=0.40)return "var(--warn)"; return "var(--accent)"; }
+  function showEmpty(html){ resultEl.classList.remove("show"); contentEl.style.display="block"; contentEl.innerHTML=html; }
+  function showResult(){ contentEl.style.display="none"; resultEl.classList.add("show"); }
+
+  function render(data){
+    var illimitato = data.illimitato===true;
+    document.getElementById("r-nome").textContent = data.nome || ("Numero "+(data.numero||""));
+    document.getElementById("r-mese").textContent = data.mese ? ("· "+data.mese) : "";
+
+    var big=document.getElementById("r-big"), word=document.getElementById("r-word"),
+        used=document.getElementById("r-used"), fill=document.getElementById("r-fill");
+
+    if(illimitato){
+      big.innerHTML='\u221E';
+      big.style.color='var(--accent-light)';
+      word.innerHTML='<span class="badge-inf">Illimitato</span>';
+      used.textContent='';
+      fill.style.width='100%'; fill.style.background='var(--accent)';
+    } else {
+      var limite=Number(data.limite||10), usati=Number(data.usati||0);
+      var restanti=(typeof data.restanti==='number')?data.restanti:Math.max(0,limite-usati);
+      var ratio=limite>0?restanti/limite:0, col=colorFor(ratio);
+      big.innerHTML=restanti+' <span class="of">/ '+limite+'</span>';
+      big.style.color=col;
+      word.textContent = restanti===0 ? 'Quota esaurita' : (restanti===1?'lancio rimasto':'lanci rimasti');
+      used.textContent = 'usati '+usati+' di '+limite;
+      fill.style.width=Math.round(ratio*100)+'%'; fill.style.background=col;
+    }
+
+    var det=data.dettaglio||[];
+    var lbl=document.getElementById("r-detlabel"), box=document.getElementById("r-det");
+    if(det.length){
+      lbl.style.display='block';
+      box.innerHTML=det.map(function(d){
+        return '<div class="det-card"><div class="n">'+Number(d.usati||0)+'</div>'+
+               '<div class="l">'+esc(d.nome||d.workflow||'')+'</div></div>';
+      }).join("");
+    } else { lbl.style.display='none'; box.innerHTML=''; }
+    showResult();
   }
 
-  function barra(container, dati, max){
-    container.innerHTML = '';
-    const entries = Object.entries(dati).sort((a,b) => b[1]-a[1]);
-    if(entries.length === 0){
-      container.innerHTML = '<div class="empty">Nessun dato ancora registrato.</div>';
-      return;
-    }
-    entries.forEach(([nome, count]) => {
-      const pct = Math.max(4, Math.round((count / max) * 100));
-      const isTeam = nome.toLowerCase() === 'team';
-      const row = document.createElement('div');
-      row.className = 'bar-row';
-      row.innerHTML = `
-        <div class="name">${nome} ${isTeam ? '<span class="badge team">TEAM</span>' : ''}</div>
-        <div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div>
-        <div class="count">${count}</div>`;
-      container.appendChild(row);
-    });
+  function cerca(){
+    var numero=(numEl.value||"").trim();
+    if(!numero){ numEl.classList.add("err"); numEl.addEventListener("input",function(){numEl.classList.remove("err");},{once:true}); setStatus("Inserisci il tuo numero.",true); return; }
+    goBtn.disabled=true; setStatus("Leggo i tuoi lanci…");
+    var url=QUOTA_ENDPOINT+(QUOTA_ENDPOINT.indexOf("?")>=0?"&":"?")+"numero="+encodeURIComponent(numero);
+    fetch(url,{method:"GET",headers:{"Accept":"application/json"}})
+      .then(function(r){ if(!r.ok) throw new Error("HTTP "+r.status); return r.json(); })
+      .then(function(data){
+        if(data && data.trovato===false){
+          showEmpty('<div class="empty"><h3>Numero non riconosciuto</h3><div>Il numero digitato non corrisponde a nessuno. Controllalo o avvisa Foffy.</div></div>');
+          setStatus(""); return;
+        }
+        render(data);
+        var when=new Date();
+        setStatus("aggiornato alle "+when.toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"}));
+      })
+      .catch(function(err){
+        showEmpty('<div class="empty"><h3>Non riesco a leggere i tuoi lanci</h3><div>L\'endpoint non ha risposto. Riprova tra poco o avvisa Foffy.</div></div>');
+        setStatus("Errore: "+err.message,true);
+      })
+      .finally(function(){ goBtn.disabled=false; });
   }
-
-  function renderLog(eventi){
-    const box = document.getElementById('logBox');
-    box.innerHTML = '<div class="log-row head"><span>Data/ora</span><span>Workflow</span><span>Utente</span><span>Credenziali</span></div>';
-    if(!eventi || eventi.length === 0){
-      box.innerHTML += '<div class="empty">Nessun evento registrato.</div>';
-      return;
-    }
-    eventi.forEach(e => {
-      const d = e.timestamp ? new Date(e.timestamp) : null;
-      const ts = d ? d.toLocaleString('it-IT', {day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}) : '—';
-      const row = document.createElement('div');
-      row.className = 'log-row';
-      row.innerHTML = `<span class="ts">${ts}</span><span class="wf">${e.workflow||''}</span><span>${e.utente||''}</span><span class="cr">${e.credenziali||''}</span>`;
-      box.appendChild(row);
-    });
-  }
-
-  async function carica(){
-    const url = WEBHOOK_URL || document.getElementById('urlInput').value.trim();
-    if(!url){
-      document.getElementById('configBox').style.display = 'block';
-      setStatus(false, 'endpoint non configurato');
-      return;
-    }
-    setStatus(true, 'aggiornamento…');
-    try{
-      const res = await fetch(url);
-      if(!res.ok) throw new Error('HTTP ' + res.status);
-      const data = await res.json();
-
-      document.getElementById('totale').textContent = data.totaleEsecuzioni ?? 0;
-      document.getElementById('numWorkflow').textContent = Object.keys(data.perWorkflow||{}).length;
-      document.getElementById('numUtenti').textContent = Object.keys(data.perUtente||{}).length;
-      document.getElementById('numCred').textContent = Object.keys(data.perCredenziale||{}).length;
-
-      const maxWf = Math.max(1, ...Object.values(data.perWorkflow||{0:0}));
-      const maxCr = Math.max(1, ...Object.values(data.perCredenziale||{0:0}));
-      const maxUt = Math.max(1, ...Object.values(data.perUtente||{0:0}));
-
-      barra(document.getElementById('perWorkflow'), data.perWorkflow||{}, maxWf);
-      barra(document.getElementById('perCredenziale'), data.perCredenziale||{}, maxCr);
-      barra(document.getElementById('perUtente'), data.perUtente||{}, maxUt);
-      renderLog(data.ultimiEventi||[]);
-
-      document.getElementById('wfSpan').textContent = Object.keys(data.perWorkflow||{}).length + ' workflow monitorati';
-      document.getElementById('logSpan').textContent = 'ultimi ' + (data.ultimiEventi||[]).length + ' eventi';
-
-      setStatus(true, 'aggiornato alle ' + new Date().toLocaleTimeString('it-IT'));
-    }catch(err){
-      setStatus(false, 'errore di connessione: ' + err.message);
-    }
-  }
-
-  document.getElementById('urlInput')?.addEventListener('keydown', (e) => {
-    if(e.key === 'Enter') carica();
-  });
-
-  carica();
+  window.cerca=cerca;
+  numEl.addEventListener("keydown",function(e){ if(e.key==="Enter") cerca(); });
+  (function initFromUrl(){ var m=/[?&]numero=([^&]+)/.exec(location.search); if(m){ numEl.value=decodeURIComponent(m[1]).trim(); cerca(); } })();
+})();
 </script>
 </body>
 </html>
